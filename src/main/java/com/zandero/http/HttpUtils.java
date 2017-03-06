@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 /**
  * Common purpose utility to fetch data from external URLs
  */
-public class HttpUtils {
+public final class HttpUtils {
 
 	private HttpUtils() {
 		// hiding constructor
@@ -198,6 +198,7 @@ public class HttpUtils {
 	 * @param path             target url
 	 * @param headers          request headers
 	 * @param parameters       to PATCH
+	 * @param entity           send to patch
 	 * @param timeOutInSeconds time out in seconds or null for default time out
 	 * @return patch request
 	 */
@@ -280,8 +281,10 @@ public class HttpUtils {
 
 	/**
 	 * Step 2. execute request
+	 *
 	 * @param request to be executed
 	 * @return response
+	 *
 	 * @throws IOException in case of network failure
 	 */
 	public static HttpResponse execute(HttpRequestBase request) throws IOException {
@@ -293,8 +296,9 @@ public class HttpUtils {
 
 	/**
 	 * Step 2. execute request asynchronously
+	 *
 	 * @param executor thread executor to be used
-	 * @param request to be executed
+	 * @param request  to be executed
 	 * @param callback to be invoked when request is completed or failes
 	 */
 	public static void executeAsync(Executor executor, HttpRequestBase request, FutureCallback<HttpResponse> callback) {

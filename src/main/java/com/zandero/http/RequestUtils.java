@@ -139,6 +139,8 @@ public final class RequestUtils {
 	 * Checks if request is made by cron job
 	 *
 	 * @param servletRequest must be GET request with cron job basic authorization set
+	 * @param username       to check agains
+	 * @param password       to check against
 	 * @return true if cron job request, false if not
 	 */
 	public static boolean checkBasicAuth(HttpServletRequest servletRequest, String username, String password) {
