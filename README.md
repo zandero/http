@@ -3,6 +3,14 @@ Http utilities for easy request building and execution
 
 Wrapper around Apache Http client 
 
+# Setup
+```xml
+<dependency>      
+     <groupId>com.zandero</groupId>      
+     <artifactId>http</artifactId>      
+     <version>1.0</version>      
+</dependency>
+```
 
 ## HttpUtils
 
