@@ -24,3 +24,9 @@ HttpRequestBase req = HttpUtils.get("http://httpbin.org/get");
 ```java	
 HttpResponse res = HttpUtils.execute(req);
 ```
+
+
+### Step 2 - execute request asynchronously 
+```java	
+HttpResponse res = HttpUtils.executeAsync(executor, req, future);
+```
