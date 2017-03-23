@@ -9,8 +9,8 @@
     <version>1.0</version>
     <packaging>jar</packaging>
 
-    <name>Zandero Utils</name>
-    <description>Zandero HTTP utilities</description>
+    <name>Zandero</name>
+    <description>HTTP utilities</description>
     <url>http://www.zandero.com</url>
     <inceptionYear>2017</inceptionYear>
 

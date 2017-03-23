@@ -1,6 +1,7 @@
 package com.zandero.http;
 
 import com.zandero.utils.StringUtils;
+import com.zandero.utils.UrlUtils;
 import org.apache.commons.net.util.SubnetUtils;
 
 import javax.servlet.http.Cookie;
@@ -50,6 +51,21 @@ public final class RequestUtils {
 		}
 
 		return request.getHeader(header);
+	}
+
+	/**
+	 * Resolves domain name from given URL
+	 *
+	 * @param request to get domain name from
+	 * @return domain name or null if not resolved
+	 */
+	public static String getDomain(HttpServletRequest request) {
+
+		if (request == null) {
+			return null;
+		}
+
+		return UrlUtils.resolveDomain(request.getServerName());
 	}
 
 	/**

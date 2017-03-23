@@ -379,7 +379,7 @@ public final class HttpUtils {
 
 		try {
 			if (response != null && response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-				return ResourceUtils.getBytes(response.getEntity().getContent(), 10000000);
+				return ResourceUtils.getBytes(response.getEntity().getContent());
 			}
 		}
 		catch (IOException e) {
