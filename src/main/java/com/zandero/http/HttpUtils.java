@@ -357,7 +357,7 @@ public final class HttpUtils {
 				HttpEntity entity = response.getEntity();
 				Header contentEncoding = entity.getContentEncoding();
 				String encoding = contentEncoding != null ? contentEncoding.getValue() : EncodeUtils.UTF_8;
-				return ResourceUtils.getString(entity.getContent(), 10000000, encoding);
+				return ResourceUtils.getString(entity.getContent(), encoding);
 			}
 		}
 		catch (IOException e) {
