@@ -2,7 +2,7 @@ package com.zandero.http.logging;
 
 import com.zandero.http.RequestUtils;
 import com.zandero.utils.StringUtils;
-import com.zandero.utils.UrlUtils;
+import com.zandero.utils.extra.UrlUtils;
 import org.slf4j.MDC;
 
 import javax.servlet.http.HttpServletRequest;

@@ -5,8 +5,8 @@ package com.zandero.http;
  */
 
 import com.zandero.utils.Assert;
-import com.zandero.utils.EncodeUtils;
 import com.zandero.utils.ResourceUtils;
+import com.zandero.utils.extra.EncodeUtils;
 import org.apache.http.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;

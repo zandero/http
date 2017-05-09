@@ -1,7 +1,7 @@
 package com.zandero.http;
 
 import com.zandero.utils.StringUtils;
-import com.zandero.utils.UrlUtils;
+import com.zandero.utils.extra.UrlUtils;
 import org.apache.commons.net.util.SubnetUtils;
 
 import javax.servlet.http.Cookie;
