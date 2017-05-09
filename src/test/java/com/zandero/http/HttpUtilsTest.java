@@ -1,7 +1,7 @@
 package com.zandero.http;
 
 import com.zandero.http.test.HttpBinResponseJSON;
-import com.zandero.utils.JsonUtils;
+import com.zandero.utils.extra.JsonUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpRequestBase;
