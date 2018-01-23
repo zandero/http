@@ -6,6 +6,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.concurrent.FutureCallback;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -29,6 +30,16 @@ public class HttpUtilsTest {
 	public void testGet() throws Exception {
 
 		HttpRequestBase req = HttpUtils.get("http://httpbin.org/get", null, null);
+		HttpResponse res = HttpUtils.execute(req);
+
+		assertEquals(HttpStatus.SC_OK, res.getStatusLine().getStatusCode());
+	}
+
+	@Ignore
+	@Test
+	public void testHttpsGet() throws Exception {
+
+		HttpRequestBase req = HttpUtils.get("https://httpbin.org/get", null, null);
 		HttpResponse res = HttpUtils.execute(req);
 
 		assertEquals(HttpStatus.SC_OK, res.getStatusLine().getStatusCode());
