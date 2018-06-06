@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.junit.Ignore;
 
+import java.util.Map;
+
 /**
  * BinResponse JSON for testing purposes only
  */
@@ -12,31 +14,11 @@ import org.junit.Ignore;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class HttpBinResponseJSON {
 
-	public HttpBinResponseArguments args;
-
 	public String data;
 
-	public HttpBinResponseHeader headers;
+	public Map<String, String> args;
 
-	public HttpBinResponseForm form;
+	public Map<String, String> headers;
 
-	@JsonIgnoreProperties(ignoreUnknown = true)
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	public class HttpBinResponseHeader {
-
-		public String Bla;
-	}
-
-	@JsonIgnoreProperties(ignoreUnknown = true)
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	public class HttpBinResponseArguments {
-
-	}
-
-	@JsonIgnoreProperties(ignoreUnknown = true)
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	public class HttpBinResponseForm {
-
-		public String Hello;
-	}
+	public Map<String, String> form;
 }

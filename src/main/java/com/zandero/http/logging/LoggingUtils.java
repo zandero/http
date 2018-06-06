@@ -12,7 +12,10 @@ import java.util.UUID;
 
 /**
  * Fill up request parameter for Log4j logging
+ *
+ * TO BE REMOVED ...
  */
+@Deprecated
 public final class LoggingUtils {
 
 	private LoggingUtils() {

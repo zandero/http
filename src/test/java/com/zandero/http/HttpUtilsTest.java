@@ -6,8 +6,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.concurrent.FutureCallback;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -15,19 +15,19 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static net.trajano.commons.testing.UtilityClassTestUtil.assertUtilityClassWellDefined;
-import static org.junit.Assert.*;
+import static com.zandero.utils.junit.AssertFinalClass.isWellDefined;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class HttpUtilsTest {
+class HttpUtilsTest {
 
 	@Test
-	public void testDefinition() throws ReflectiveOperationException {
+	void testDefinition() {
 
-		assertUtilityClassWellDefined(HttpUtils.class);
+		isWellDefined(HttpUtils.class);
 	}
 
 	@Test
-	public void testGet() throws Exception {
+	void testGet() throws Exception {
 
 		HttpRequestBase req = HttpUtils.get("http://httpbin.org/get", null, null);
 		HttpResponse res = HttpUtils.execute(req);
@@ -35,9 +35,9 @@ public class HttpUtilsTest {
 		assertEquals(HttpStatus.SC_OK, res.getStatusLine().getStatusCode());
 	}
 
-	@Ignore
+	@Disabled
 	@Test
-	public void testHttpsGet() throws Exception {
+	void testHttpsGet() throws Exception {
 
 		HttpRequestBase req = HttpUtils.get("https://httpbin.org/get", null, null);
 		HttpResponse res = HttpUtils.execute(req);
@@ -46,7 +46,7 @@ public class HttpUtilsTest {
 	}
 
 	@Test
-	public void testPost() throws Exception {
+	void testPost() throws Exception {
 
 		HttpRequestBase req = HttpUtils.post("http://httpbin.org/post", null, null, null);
 		HttpResponse res = HttpUtils.execute(req);
@@ -65,18 +65,16 @@ public class HttpUtilsTest {
 		req = HttpUtils.post("http://httpbin.org/post", headers, params, null);
 		res = HttpUtils.execute(req);
 
-		assertEquals(HttpStatus.SC_OK, res.getStatusLine().getStatusCode());
-
 		response = HttpUtils.getContentAsString(res);
 		assertNotNull(response);
 
 		HttpBinResponseJSON json = JsonUtils.fromJson(response, HttpBinResponseJSON.class);
-		assertEquals("Bla", json.headers.Bla);
-		assertEquals("World", json.form.Hello);
+		assertEquals("Bla", json.headers.get("Bla"));
+		assertEquals("World", json.form.get("Hello"));
 	}
 
 	@Test
-	public void asyncClientRedirectTest() throws IOException, InterruptedException {
+	void asyncClientRedirectTest() throws IOException, InterruptedException {
 
 		HttpRequestBase req = HttpUtils.get("http://httpbin.org/redirect/1", null, null);
 		HttpResponse res = HttpUtils.execute(req);
@@ -90,20 +88,17 @@ public class HttpUtilsTest {
 		final int[] result = new int[1];
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		HttpUtils.executeAsync(executor, req, new FutureCallback<HttpResponse>() {
-			@Override
-			public void completed(HttpResponse httpResponse) {
+			@Override public void completed(HttpResponse httpResponse) {
 
 				result[0] = httpResponse.getStatusLine().getStatusCode();
 			}
 
-			@Override
-			public void failed(Exception e) {
+			@Override public void failed(Exception e) {
 
 				assertFalse(true);
 			}
 
-			@Override
-			public void cancelled() {
+			@Override public void cancelled() {
 
 				assertFalse(true);
 			}

@@ -1,32 +1,32 @@
 package com.zandero.http;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
 import java.util.Base64;
 
-import static net.trajano.commons.testing.UtilityClassTestUtil.assertUtilityClassWellDefined;
-import static org.junit.Assert.*;
+import static com.zandero.utils.junit.AssertFinalClass.isWellDefined;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *
  */
-public class RequestUtilsTest {
+class RequestUtilsTest {
 
 	private static final String SESSION_HEADER = "X-Session";
 
 	@Test
-	public void testDefinition() throws ReflectiveOperationException {
+	void testDefinition() throws ReflectiveOperationException {
 
-		assertUtilityClassWellDefined(RequestUtils.class);
+		isWellDefined(RequestUtils.class);
 	}
 
 	/**
 	 * @return produces mocked request
 	 */
-	HttpServletRequest getRequest() {
+	private HttpServletRequest getRequest() {
 
 		HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
 		Mockito.when(request.getHeader("User-Agent")).thenReturn("Agent");
@@ -35,13 +35,13 @@ public class RequestUtilsTest {
 		return request;
 	}
 
-	HttpServletRequest getEmptyRequest() {
+	private HttpServletRequest getEmptyRequest() {
 
 		return Mockito.mock(HttpServletRequest.class);
 	}
 
 	@Test
-	public void testGetUserAgent() {
+	void testGetUserAgent() {
 
 		assertNull(RequestUtils.getUserAgent(null));
 		assertNull(RequestUtils.getUserAgent(getEmptyRequest()));
@@ -49,7 +49,7 @@ public class RequestUtilsTest {
 	}
 
 	@Test
-	public void isIpAllowedTest() {
+	void isIpAllowedTest() {
 
 		assertFalse(RequestUtils.isIpAddressAllowed(null));
 		assertFalse(RequestUtils.isIpAddressAllowed(null, ""));
@@ -74,7 +74,7 @@ public class RequestUtilsTest {
 	}
 
 	@Test
-	public void testBasicAuth() {
+	void testBasicAuth() {
 
 		HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
 

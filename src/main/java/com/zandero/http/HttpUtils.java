@@ -6,7 +6,6 @@ package com.zandero.http;
 
 import com.zandero.utils.Assert;
 import com.zandero.utils.ResourceUtils;
-import com.zandero.utils.extra.EncodeUtils;
 import org.apache.http.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
@@ -35,6 +34,8 @@ import java.util.stream.Collectors;
  * Common purpose utility to fetch data from external URLs
  */
 public final class HttpUtils {
+
+	public static final String UTF_8 = "UTF-8";
 
 	private HttpUtils() {
 		// hiding constructor
@@ -284,7 +285,6 @@ public final class HttpUtils {
 	 *
 	 * @param request to be executed
 	 * @return response
-	 *
 	 * @throws IOException in case of network failure
 	 */
 	public static HttpResponse execute(HttpRequestBase request) throws IOException {
@@ -356,7 +356,7 @@ public final class HttpUtils {
 
 				HttpEntity entity = response.getEntity();
 				Header contentEncoding = entity.getContentEncoding();
-				String encoding = contentEncoding != null ? contentEncoding.getValue() : EncodeUtils.UTF_8;
+				String encoding = contentEncoding != null ? contentEncoding.getValue() : UTF_8;
 				return ResourceUtils.getString(entity.getContent(), encoding);
 			}
 		}
@@ -405,11 +405,11 @@ public final class HttpUtils {
 			try {
 
 				List<BasicNameValuePair> params = parameters.keySet()
-					.stream()
-					.map(name -> new BasicNameValuePair(name, parameters.get(name)))
-					.collect(Collectors.toList());
+				                                            .stream()
+				                                            .map(name -> new BasicNameValuePair(name, parameters.get(name)))
+				                                            .collect(Collectors.toList());
 
-				requestBase.setEntity(new UrlEncodedFormEntity(params, EncodeUtils.UTF_8));
+				requestBase.setEntity(new UrlEncodedFormEntity(params, UTF_8));
 			}
 			catch (UnsupportedEncodingException e) {
 				throw new IllegalArgumentException("Cant encode parameters!", e);
@@ -425,10 +425,10 @@ public final class HttpUtils {
 
 		int timeOut = timeOutInSeconds * 1000;
 		return RequestConfig.custom()
-			.setSocketTimeout(timeOut)
-			.setConnectTimeout(timeOut)
-			.setConnectionRequestTimeout(timeOut)
-			.build();
+		                    .setSocketTimeout(timeOut)
+		                    .setConnectTimeout(timeOut)
+		                    .setConnectionRequestTimeout(timeOut)
+		                    .build();
 	}
 }
 
