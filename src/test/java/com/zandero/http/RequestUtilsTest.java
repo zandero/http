@@ -18,7 +18,7 @@ class RequestUtilsTest {
 	private static final String SESSION_HEADER = "X-Session";
 
 	@Test
-	void testDefinition() throws ReflectiveOperationException {
+	void testDefinition() {
 
 		isWellDefined(RequestUtils.class);
 	}
