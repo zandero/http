@@ -335,7 +335,6 @@ public final class Http {
 	 * @return Response object with HTTP response code and response as String
 	 * @throws HttpException in case of invalid input parameters
 	 */
-	@Deprecated
 	private static Response execute(String method,
 	                                String apiUrl,
 	                                String body,
