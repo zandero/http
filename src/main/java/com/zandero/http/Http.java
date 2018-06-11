@@ -4,6 +4,7 @@ import com.zandero.utils.extra.UrlUtils;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSocketFactory;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -22,8 +23,14 @@ public final class Http {
 	private static final int DEFAULT_CONNECT_TIMEOUT = 3000; // 3s
 	private static final int DEFAULT_READ_TIMEOUT = 5000; // 5s
 
+	private static SSLSocketFactory sslFactory;
+
 	private Http() {
 		// hide constructor
+	}
+
+	public static void setSSLSocketFactory(SSLSocketFactory factory) {
+		sslFactory = factory;
 	}
 
 	/**
@@ -355,11 +362,11 @@ public final class Http {
 			URL url = new URL(apiUrl);
 
 			if (apiUrl.toLowerCase().startsWith("https://")) {
+
 				conn = (HttpsURLConnection) url.openConnection();
-				/* ?? ...
-					HttpsURLConnection https = (HttpsURLConnection)conn;
-					https.setSSLSocketFactory(sslFactory);
-				?? */
+				if (sslFactory != null) {
+					((HttpsURLConnection) conn).setSSLSocketFactory(sslFactory);
+				}
 			}
 			else {
 				conn = (HttpURLConnection) url.openConnection();
@@ -436,4 +443,3 @@ public final class Http {
 		}
 	}
 }
-

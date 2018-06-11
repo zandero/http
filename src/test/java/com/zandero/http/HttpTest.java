@@ -3,7 +3,6 @@ package com.zandero.http;
 import com.zandero.http.test.HttpBinResponseJSON;
 import com.zandero.utils.extra.JsonUtils;
 import com.zandero.utils.extra.UrlUtils;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
@@ -26,7 +25,9 @@ class HttpTest {
 	}
 
 	@Test
-	void testGet() throws Exception {
+	void get() throws Exception {
+
+		Http.setSSLSocketFactory(TrustAnyTrustManager.getSSLFactory());
 
 		Http.Response res = Http.get("http://httpbin.org/get");
 		assertEquals(HttpURLConnection.HTTP_OK, res.getCode());
@@ -35,9 +36,10 @@ class HttpTest {
 		assertEquals("text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2", json.headers.get("Accept"));
 	}
 
-	@Disabled
 	@Test
-	void testHttpsGet() throws Exception {
+	void getSsl() throws Exception {
+
+		Http.setSSLSocketFactory(TrustAnyTrustManager.getSSLFactory());
 
 		Http.Response res = Http.get("https://httpbin.org/get"); // FAILING on HTTPS ... trustore issue
 		assertEquals(HttpURLConnection.HTTP_OK, res.getCode());
@@ -47,7 +49,7 @@ class HttpTest {
 	}
 
 	@Test
-	void testPost() throws Exception {
+	void post() throws Exception {
 
 		Http.Response res = Http.post("http://httpbin.org/post", null, null, null);
 		assertEquals(HttpURLConnection.HTTP_OK, res.getCode());
@@ -72,7 +74,32 @@ class HttpTest {
 	}
 
 	@Test
-	void testPut() throws Exception {
+	void postSsl() throws Exception {
+
+		Http.Response res = Http.post("http://httpbin.org/post", null, null, null);
+		assertEquals(HttpURLConnection.HTTP_OK, res.getCode());
+		assertNotNull(res.getResponse());
+
+		// post with content
+		Map<String, String> headers = new HashMap<>();
+		headers.put("bla", "Bla");
+
+		Map<String, String> formParam = new HashMap<>();
+		formParam.put("Hello", "World");
+		String formParams = UrlUtils.composeQuery(formParam);
+
+		res = Http.post("http://httpbin.org/post", formParams, null, headers);
+
+		assertEquals(HttpURLConnection.HTTP_OK, res.getCode());
+		assertNotNull(res.getResponse());
+
+		HttpBinResponseJSON json = JsonUtils.fromJson(res.getResponse(), HttpBinResponseJSON.class);
+		assertEquals("Bla", json.headers.get("Bla"));
+		assertEquals("World", json.form.get("Hello"));
+	}
+
+	@Test
+	void put() throws Exception {
 
 		Http.Response res = Http.put("http://httpbin.org/put", null, null, null);
 		assertEquals(HttpURLConnection.HTTP_OK, res.getCode());
@@ -97,7 +124,7 @@ class HttpTest {
 	}
 
 	@Test
-	void testDelete() throws Http.HttpException {
+	void delete() throws Http.HttpException {
 
 		Http.Response res = Http.delete("http://httpbin.org/delete");
 		assertEquals(HttpURLConnection.HTTP_OK, res.getCode());
