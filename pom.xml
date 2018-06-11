@@ -6,7 +6,7 @@
 
     <artifactId>http</artifactId>
     <groupId>com.zandero</groupId>
-    <version>1.2.2</version>
+    <version>1.2.3</version>
     <packaging>jar</packaging>
 
     <name>Zandero</name>
@@ -48,7 +48,8 @@
 
         <version.zandero.utils>[1.2,)</version.zandero.utils>
         <version.zandero.utils.extra>[1.3.1,)</version.zandero.utils.extra>
-        <version.logback>[1.1.7,)</version.logback>
+
+        <version.slf4j-api>1.8.0-beta2</version.slf4j-api>
 
         <version.commons.net>[3.4,)</version.commons.net>
         <version.apache.httpclient>4.5.2</version.apache.httpclient>
@@ -56,6 +57,7 @@
 
         <version.junit>[5.1,)</version.junit>
         <version.mockito-all>[1.10.19,)</version.mockito-all>
+        <version.logback>[1.1.7,)</version.logback>
 
     </properties>
 
@@ -87,9 +89,17 @@
 
         <!-- LOGGER -->
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${version.slf4j-api}</version>
+        </dependency>
+        <!-- END OF LOGGER -->
+
+        <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>${version.logback}</version>
+            <scope>test</scope>
         </dependency>
         <!-- END OF LOGGER -->
 

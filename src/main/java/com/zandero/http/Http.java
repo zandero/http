@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -55,9 +56,12 @@ public final class Http {
 
 		private final String response;
 
-		public Response(int statusCode, String requestResponse) {
+		private  Map<String, List<String>> headers;
+
+		public Response(int statusCode, String requestResponse, Map<String, List<String>> headerFields) {
 			code = statusCode;
 			response = requestResponse;
+			headers = headerFields;
 		}
 
 		public int getCode() {
@@ -84,6 +88,19 @@ public final class Http {
 
 		public boolean not(int... status) {
 			return !is(status);
+		}
+
+		public List<String> getHeaders(String name) {
+			return headers.get(name);
+		}
+
+		public String getHeader(String name) {
+			List<String> found = headers.get(name);
+			if (found != null && found.size() > 0) {
+				return found.get(0);
+			}
+
+			return null;
 		}
 	}
 
@@ -430,7 +447,7 @@ public final class Http {
 
 			log.debug("Output from request: {} - {}", responseCode, content);
 
-			return new Response(responseCode, content.toString());
+			return new Response(responseCode, content.toString(), conn.getHeaderFields());
 		}
 		catch (Exception e) {
 			log.error("Failed execute request to: {}", apiUrl, e);
