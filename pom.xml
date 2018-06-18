@@ -54,6 +54,7 @@
         <version.commons.net>[3.4,)</version.commons.net>
         <version.apache.httpclient>4.5.2</version.apache.httpclient>
         <version.apache.httpclient.async>4.1.2</version.apache.httpclient.async>
+        <version.java.servlet>3.1.0</version.java.servlet>
 
         <version.junit>[5.1,)</version.junit>
         <version.mockito-all>[1.10.19,)</version.mockito-all>
@@ -85,6 +86,18 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpasyncclient</artifactId>
             <version>${version.apache.httpclient.async}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>${version.commons.net}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${version.java.servlet}</version>
         </dependency>
 
         <!-- LOGGER -->
@@ -124,16 +137,6 @@
             <artifactId>mockito-all</artifactId>
             <version>${version.mockito-all}</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-net</groupId>
-            <artifactId>commons-net</artifactId>
-            <version>${version.commons.net}</version>
         </dependency>
 
     </dependencies>
