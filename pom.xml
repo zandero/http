@@ -60,8 +60,11 @@
 
         <version.junit>[5.1,)</version.junit>
         <version.zandero.utils.junit>[1.0,)</version.zandero.utils.junit>
+
         <version.mockito-all>1.10.19</version.mockito-all>
-        <version.logback>[1.1.7,)</version.logback>
+        <version.mockito-core>4.4.0</version.mockito-core>
+
+        <version.logback>1.1.7</version.logback>
 
     </properties>
 
@@ -152,14 +155,14 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>4.4.0</version>
+            <version>${version.mockito-core}</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
-            <version>4.4.0</version>
+            <version>${version.mockito-core}</version>
             <scope>test</scope>
         </dependency>
 
