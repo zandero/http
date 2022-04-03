@@ -1,6 +1,7 @@
 package com.zandero.http;
 
 import com.zandero.http.test.HttpBinResponseJSON;
+import com.zandero.utils.*;
 import com.zandero.utils.extra.JsonUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -20,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class HttpUtilsTest {
 
+	private static final String HTTP_BIN_ROOT = "https://httpbingo.org/";
+
 	@Test
 	void testDefinition() {
 
@@ -29,17 +32,16 @@ class HttpUtilsTest {
 	@Test
 	void testGet() throws Exception {
 
-		HttpRequestBase req = HttpUtils.get("http://httpbin.org/get", null, null);
+		HttpRequestBase req = HttpUtils.get(HTTP_BIN_ROOT + "get", null, null);
 		HttpResponse res = HttpUtils.execute(req);
 
 		assertEquals(HttpStatus.SC_OK, res.getStatusLine().getStatusCode());
 	}
 
-	@Disabled
 	@Test
 	void testHttpsGet() throws Exception {
 
-		HttpRequestBase req = HttpUtils.get("https://httpbin.org/get", null, null);
+		HttpRequestBase req = HttpUtils.get(HTTP_BIN_ROOT + "get", null, null);
 		HttpResponse res = HttpUtils.execute(req);
 
 		assertEquals(HttpStatus.SC_OK, res.getStatusLine().getStatusCode());
@@ -48,7 +50,7 @@ class HttpUtilsTest {
 	@Test
 	void testPost() throws Exception {
 
-		HttpRequestBase req = HttpUtils.post("http://httpbin.org/post", null, null, null);
+		HttpRequestBase req = HttpUtils.post(HTTP_BIN_ROOT + "post", null, null, null);
 		HttpResponse res = HttpUtils.execute(req);
 		assertEquals(HttpStatus.SC_OK, res.getStatusLine().getStatusCode());
 
@@ -62,21 +64,21 @@ class HttpUtilsTest {
 		Map<String, String> params = new HashMap<>();
 		params.put("Hello", "World");
 
-		req = HttpUtils.post("http://httpbin.org/post", headers, params, null);
+		req = HttpUtils.post(HTTP_BIN_ROOT + "post", headers, params, null);
 		res = HttpUtils.execute(req);
 
 		response = HttpUtils.getContentAsString(res);
 		assertNotNull(response);
 
 		HttpBinResponseJSON json = JsonUtils.fromJson(response, HttpBinResponseJSON.class);
-		assertEquals("Bla", json.headers.get("Bla"));
-		assertEquals("World", json.form.get("Hello"));
+		assertEquals(SetUtils.from("Bla"), json.headers.get("Bla"));
+		assertEquals(SetUtils.from("World"), json.form.get("Hello"));
 	}
 
 	@Test
 	void asyncClientRedirectTest() throws IOException, InterruptedException {
 
-		HttpRequestBase req = HttpUtils.get("http://httpbin.org/redirect/1", null, null);
+		HttpRequestBase req = HttpUtils.get(HTTP_BIN_ROOT + "redirect/1", null, null);
 		HttpResponse res = HttpUtils.execute(req);
 
 		assertEquals(HttpStatus.SC_OK, res.getStatusLine().getStatusCode());
@@ -89,18 +91,15 @@ class HttpUtilsTest {
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		HttpUtils.executeAsync(executor, req, new FutureCallback<HttpResponse>() {
 			@Override public void completed(HttpResponse httpResponse) {
-
 				result[0] = httpResponse.getStatusLine().getStatusCode();
 			}
 
 			@Override public void failed(Exception e) {
-
-				assertFalse(true);
+				fail();
 			}
 
 			@Override public void cancelled() {
-
-				assertFalse(true);
+				fail();
 			}
 		});
 

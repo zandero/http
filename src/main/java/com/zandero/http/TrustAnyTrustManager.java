@@ -1,29 +1,61 @@
 package com.zandero.http;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.X509Certificate;
+import javax.net.ssl.*;
+import java.security.*;
+import java.security.cert.*;
 
 /**
- * trust all - not recommended for production use ...
+ * Dummy trust manager allowing everybody
+ * not intended for production use ...
  */
 public class TrustAnyTrustManager implements X509TrustManager {
 
-	public void checkClientTrusted(X509Certificate[] chain, String authType) {}
+    /**
+     * Dummy trust manager allowing everybody
+     */
+    public TrustAnyTrustManager(){
+        super();
+    }
 
-	public void checkServerTrusted(X509Certificate[] chain, String authType) {}
+    /**
+	 * Dummy implementation
+     * checks client is trusted (no implementation)
+     *
+     * @param chain    certificate chain
+     * @param authType authorization type
+     */
+    public void checkClientTrusted(X509Certificate[] chain, String authType) {
+    }
 
-	public X509Certificate[] getAcceptedIssuers() {
-		return new X509Certificate[] {};
-	}
+    /**
+	 * Dummy implementation
+     * checks server is trusted (no implementation)
+     *
+     * @param chain    certificate chain
+     * @param authType authorization type
+     */
+    public void checkServerTrusted(X509Certificate[] chain, String authType) {
+    }
 
-	public static SSLSocketFactory getSSLFactory() throws KeyManagementException, NoSuchAlgorithmException {
-		SSLContext sc = SSLContext.getInstance("SSL");
-		sc.init(null, new TrustManager[]{new TrustAnyTrustManager()}, new java.security.SecureRandom());
-		return sc.getSocketFactory();
-	}
+    /**
+     * List of issuers
+     *
+     * @return list of accepted issuers
+     */
+    public X509Certificate[] getAcceptedIssuers() {
+        return new X509Certificate[]{};
+    }
+
+    /**
+     * Simple SSL socket factory trusting everybody
+     *
+     * @return SSL socket factory
+     * @throws KeyManagementException key management exception
+     * @throws NoSuchAlgorithmException missing algorithm exception
+     */
+    public static SSLSocketFactory getSSLFactory() throws KeyManagementException, NoSuchAlgorithmException {
+        SSLContext sc = SSLContext.getInstance("SSL");
+        sc.init(null, new TrustManager[]{new TrustAnyTrustManager()}, new java.security.SecureRandom());
+        return sc.getSocketFactory();
+    }
 }

@@ -35,6 +35,9 @@ import java.util.stream.Collectors;
  */
 public final class HttpUtils {
 
+	/**
+	 * UTF-8
+	 */
 	public static final String UTF_8 = "UTF-8";
 
 	private HttpUtils() {

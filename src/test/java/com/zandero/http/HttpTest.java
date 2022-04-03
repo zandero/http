@@ -1,135 +1,136 @@
 package com.zandero.http;
 
-import com.zandero.http.test.HttpBinResponseJSON;
-import com.zandero.utils.extra.JsonUtils;
-import com.zandero.utils.extra.UrlUtils;
-import org.junit.jupiter.api.Test;
+import com.zandero.http.test.*;
+import com.zandero.utils.*;
+import com.zandero.utils.extra.*;
+import org.junit.jupiter.api.*;
 
-import java.net.HttpURLConnection;
-import java.util.HashMap;
-import java.util.Map;
+import java.net.*;
+import java.util.*;
 
-import static com.zandero.utils.junit.AssertFinalClass.isWellDefined;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static com.zandero.utils.junit.AssertFinalClass.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Using http://httpbin.org/ for endpoints
  */
 class HttpTest {
 
-	@Test
-	void isFinalClass() {
+    private static final String HTTP_BIN_ROOT = "https://httpbingo.org/";
 
-		isWellDefined(Http.class);
-	}
+    @Test
+    void isFinalClass() {
 
-	@Test
-	void get() throws Exception {
+        isWellDefined(Http.class);
+    }
 
-		Http.setSSLSocketFactory(TrustAnyTrustManager.getSSLFactory());
+    @Test
+    void get() throws Exception {
 
-		Http.Response res = Http.get("http://httpbin.org/get");
-		assertEquals(HttpURLConnection.HTTP_OK, res.getCode());
+        Http.setSSLSocketFactory(TrustAnyTrustManager.getSSLFactory());
 
-		HttpBinResponseJSON json = JsonUtils.fromJson(res.getResponse(), HttpBinResponseJSON.class);
-		assertEquals("text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2", json.headers.get("Accept"));
-	}
+        Http.Response res = Http.get(HTTP_BIN_ROOT + "get");
+        assertEquals(HttpURLConnection.HTTP_OK, res.getCode());
 
-	@Test
-	void getSsl() throws Exception {
+        HttpBinResponseJSON json = JsonUtils.fromJson(res.getResponse(), HttpBinResponseJSON.class);
+        assertEquals(SetUtils.from("text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2"),
+                     json.headers.get("Accept"));
+    }
 
-		Http.setSSLSocketFactory(TrustAnyTrustManager.getSSLFactory());
+    @Test
+    void getSsl() throws Exception {
 
-		Http.Response res = Http.get("https://httpbin.org/get"); // FAILING on HTTPS ... trustore issue
-		assertEquals(HttpURLConnection.HTTP_OK, res.getCode());
+        Http.setSSLSocketFactory(TrustAnyTrustManager.getSSLFactory());
 
-		HttpBinResponseJSON json = JsonUtils.fromJson(res.getResponse(), HttpBinResponseJSON.class);
-		assertEquals("text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2", json.headers.get("Accept"));
-	}
+        Http.Response res = Http.get(HTTP_BIN_ROOT + "get"); // FAILING on HTTPS ... trustore issue
+        assertEquals(HttpURLConnection.HTTP_OK, res.getCode());
 
-	@Test
-	void post() throws Exception {
+        HttpBinResponseJSON json = JsonUtils.fromJson(res.getResponse(), HttpBinResponseJSON.class);
+        assertEquals(SetUtils.from("text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2"), json.headers.get("Accept"));
+    }
 
-		Http.Response res = Http.post("http://httpbin.org/post", null, null, null);
-		assertEquals(HttpURLConnection.HTTP_OK, res.getCode());
-		assertNotNull(res.getResponse());
+    @Test
+    void post() throws Exception {
 
-		// post with content
-		Map<String, String> headers = new HashMap<>();
-		headers.put("bla", "Bla");
+        Http.Response res = Http.post(HTTP_BIN_ROOT + "post", null, null, null);
+        assertEquals(HttpURLConnection.HTTP_OK, res.getCode());
+        assertNotNull(res.getResponse());
 
-		Map<String, String> formParam = new HashMap<>();
-		formParam.put("Hello", "World");
-		String formParams = UrlUtils.composeQuery(formParam);
+        // post with content
+        Map<String, String> headers = new HashMap<>();
+        headers.put("bla", "Bla");
 
-		res = Http.post("http://httpbin.org/post", formParams, null, headers);
+        Map<String, String> formParam = new HashMap<>();
+        formParam.put("Hello", "World");
+        String formParams = UrlUtils.composeQuery(formParam);
 
-		assertEquals(HttpURLConnection.HTTP_OK, res.getCode());
-		assertNotNull(res.getResponse());
+        res = Http.post(HTTP_BIN_ROOT + "post", formParams, null, headers);
 
-		HttpBinResponseJSON json = JsonUtils.fromJson(res.getResponse(), HttpBinResponseJSON.class);
-		assertEquals("Bla", json.headers.get("Bla"));
-		assertEquals("World", json.form.get("Hello"));
-	}
+        assertEquals(HttpURLConnection.HTTP_OK, res.getCode());
+        assertNotNull(res.getResponse());
 
-	@Test
-	void postSsl() throws Exception {
+        HttpBinResponseJSON json = JsonUtils.fromJson(res.getResponse(), HttpBinResponseJSON.class);
+        assertEquals(SetUtils.from("Bla"), json.headers.get("Bla"));
+        assertEquals(SetUtils.from("World"), json.form.get("Hello"));
+    }
 
-		Http.Response res = Http.post("http://httpbin.org/post", null, null, null);
-		assertEquals(HttpURLConnection.HTTP_OK, res.getCode());
-		assertNotNull(res.getResponse());
+    @Test
+    void postSsl() throws Exception {
 
-		// post with content
-		Map<String, String> headers = new HashMap<>();
-		headers.put("bla", "Bla");
+        Http.Response res = Http.post(HTTP_BIN_ROOT + "post", null, null, null);
+        assertEquals(HttpURLConnection.HTTP_OK, res.getCode());
+        assertNotNull(res.getResponse());
 
-		Map<String, String> formParam = new HashMap<>();
-		formParam.put("Hello", "World");
-		String formParams = UrlUtils.composeQuery(formParam);
+        // post with content
+        Map<String, String> headers = new HashMap<>();
+        headers.put("bla", "Bla");
 
-		res = Http.post("http://httpbin.org/post", formParams, null, headers);
+        Map<String, String> formParam = new HashMap<>();
+        formParam.put("Hello", "World");
+        String formParams = UrlUtils.composeQuery(formParam);
 
-		assertEquals(HttpURLConnection.HTTP_OK, res.getCode());
-		assertNotNull(res.getResponse());
+        res = Http.post(HTTP_BIN_ROOT + "post", formParams, null, headers);
 
-		HttpBinResponseJSON json = JsonUtils.fromJson(res.getResponse(), HttpBinResponseJSON.class);
-		assertEquals("Bla", json.headers.get("Bla"));
-		assertEquals("World", json.form.get("Hello"));
-	}
+        assertEquals(HttpURLConnection.HTTP_OK, res.getCode());
+        assertNotNull(res.getResponse());
 
-	@Test
-	void put() throws Exception {
+        HttpBinResponseJSON json = JsonUtils.fromJson(res.getResponse(), HttpBinResponseJSON.class);
+        assertEquals(SetUtils.from("Bla"), json.headers.get("Bla"));
+        assertEquals(SetUtils.from("World"), json.form.get("Hello"));
+    }
 
-		Http.Response res = Http.put("http://httpbin.org/put", null, null, null);
-		assertEquals(HttpURLConnection.HTTP_OK, res.getCode());
-		assertNotNull(res.getResponse());
+    @Test
+    void put() throws Exception {
 
-		// post with content
-		Map<String, String> headers = new HashMap<>();
-		headers.put("bla", "Bla");
+        Http.Response res = Http.put(HTTP_BIN_ROOT + "put", null, null, null);
+        assertEquals(HttpURLConnection.HTTP_OK, res.getCode());
+        assertNotNull(res.getResponse());
 
-		Map<String, String> formParam = new HashMap<>();
-		formParam.put("Hello", "World");
-		String formParams = UrlUtils.composeQuery(formParam);
+        // post with content
+        Map<String, String> headers = new HashMap<>();
+        headers.put("bla", "Bla");
 
-		res = Http.put("http://httpbin.org/put", formParams, null, headers);
+        Map<String, String> formParam = new HashMap<>();
+        formParam.put("Hello", "World");
+        String formParams = UrlUtils.composeQuery(formParam);
 
-		assertEquals(HttpURLConnection.HTTP_OK, res.getCode());
-		assertNotNull(res.getResponse());
+        res = Http.put(HTTP_BIN_ROOT + "put", formParams, null, headers);
 
-		HttpBinResponseJSON json = JsonUtils.fromJson(res.getResponse(), HttpBinResponseJSON.class);
-		assertEquals("Bla", json.headers.get("Bla"));
-		assertEquals("Hello=World", json.data);
-	}
+        assertEquals(HttpURLConnection.HTTP_OK, res.getCode());
+        assertNotNull(res.getResponse());
 
-	@Test
-	void delete() throws Http.HttpException {
+        HttpBinResponseJSON json = JsonUtils.fromJson(res.getResponse(), HttpBinResponseJSON.class);
+        assertEquals(SetUtils.from("Bla"), json.headers.get("Bla"));
+        assertEquals("Hello=World", json.data);
+    }
 
-		Http.Response res = Http.delete("http://httpbin.org/delete");
-		assertEquals(HttpURLConnection.HTTP_OK, res.getCode());
+    @Test
+    void delete() throws Http.HttpException {
 
-		HttpBinResponseJSON json = JsonUtils.fromJson(res.getResponse(), HttpBinResponseJSON.class);
-		assertEquals("text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2", json.headers.get("Accept"));
-	}
+        Http.Response res = Http.delete(HTTP_BIN_ROOT + "delete");
+        assertEquals(HttpURLConnection.HTTP_OK, res.getCode());
+
+        HttpBinResponseJSON json = JsonUtils.fromJson(res.getResponse(), HttpBinResponseJSON.class);
+        assertEquals(SetUtils.from("text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2"), json.headers.get("Accept"));
+    }
 }

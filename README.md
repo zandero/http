@@ -8,7 +8,7 @@ Wrapper around Apache Http client
 <dependency>      
      <groupId>com.zandero</groupId>      
      <artifactId>http</artifactId>      
-     <version>1.2</version>      
+     <version>1.3</version>      
 </dependency>
 ```
 
